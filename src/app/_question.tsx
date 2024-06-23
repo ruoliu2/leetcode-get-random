@@ -1,29 +1,42 @@
 'use client';
 import React, {useState} from 'react';
-import {Box, Checkbox, FormControlLabel, IconButton, List, ListItem, ListItemText, Typography,} from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import topics from '../../public/data/top150.json';
 import {Shuffle} from '@mui/icons-material';
 
-
-const difficultyColors = {
+const difficultyColors: {[key: string]: string} = {
   Easy: 'green',
   Medium: 'orange',
   Hard: 'red',
 };
 
 const Question = () => {
-  const [filter, setFilter] = useState({
+  type Filter = {
+    [key: string]: boolean;
+  };
+  const [filter, setFilter] = useState<Filter>({
     Easy: true,
     Medium: true,
     Hard: true,
   });
 
-  const handleFilterChange = event => {
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter({...filter, [event.target.name]: event.target.checked});
   };
 
-  const getRandomQuestion = (questions) => {
-    const filteredQuestions = questions.filter(([name, link, difficulty]) => filter[difficulty]);
+  const getRandomQuestion = (questions: string[][]) => {
+    const filteredQuestions = questions.filter(
+      ([name, link, difficulty]) => filter[difficulty]
+    );
     const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
     const [name, link, difficulty] = filteredQuestions[randomIndex];
     window.open(link, '_blank');
@@ -62,13 +75,15 @@ const Question = () => {
           }
           label="Hard"
         />
-        <IconButton onClick={() => getRandomQuestion(Object.values(topics).flat())}>
-          <Shuffle/>
+        <IconButton
+          onClick={() => getRandomQuestion(Object.values(topics).flat())}
+        >
+          <Shuffle />
         </IconButton>
       </Box>
 
       {/*add some padding*/}
-      <Box py={2}/>
+      <Box py={2} />
 
       {Object.entries(topics).map(([topic, questions]) => (
         <div key={topic}>
@@ -77,23 +92,26 @@ const Question = () => {
               {topic}
             </Typography>
             <IconButton onClick={() => getRandomQuestion(questions)}>
-              <Shuffle/>
+              <Shuffle />
             </IconButton>
           </Box>
           <List>
-            {questions.map(([name, link, difficulty], index) => (filter[difficulty] && (
-              <ListItem key={index} component="a" href={link} divider>
-                <ListItemText
-                  primary={name}
-                  secondary={difficulty}
-                  secondaryTypographyProps={{
-                    style: {
-                      color: difficultyColors[difficulty] || 'black',
-                    },
-                  }}
-                />
-              </ListItem>
-            )))}
+            {questions.map(
+              ([name, link, difficulty], index) =>
+                filter[difficulty] && (
+                  <ListItem key={index} component="a" href={link} divider>
+                    <ListItemText
+                      primary={name}
+                      secondary={difficulty}
+                      secondaryTypographyProps={{
+                        style: {
+                          color: difficultyColors[difficulty] || 'black',
+                        },
+                      }}
+                    />
+                  </ListItem>
+                )
+            )}
           </List>
         </div>
       ))}
