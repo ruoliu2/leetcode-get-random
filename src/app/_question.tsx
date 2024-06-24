@@ -1,19 +1,10 @@
 'use client';
 import React, {useState} from 'react';
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import {Box, Checkbox, FormControlLabel, IconButton, List, ListItem, ListItemText, Typography,} from '@mui/material';
 import topics from '../../public/data/top150.json';
 import {Shuffle} from '@mui/icons-material';
 
-const difficultyColors: {[key: string]: string} = {
+const difficultyColors: { [key: string]: string } = {
   Easy: 'green',
   Medium: 'orange',
   Hard: 'red',
@@ -42,48 +33,33 @@ const Question = () => {
     window.open(link, '_blank');
   };
 
+  const difficulties = ['Easy', 'Medium', 'Hard'];
+
   return (
     <Box>
       <Box>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={filter.Easy}
-              onChange={handleFilterChange}
-              name="Easy"
-            />
-          }
-          label="Easy"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={filter.Medium}
-              onChange={handleFilterChange}
-              name="Medium"
-            />
-          }
-          label="Medium"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={filter.Hard}
-              onChange={handleFilterChange}
-              name="Hard"
-            />
-          }
-          label="Hard"
-        />
+        {difficulties.map((difficulty) => (
+          <FormControlLabel
+            key={difficulty}
+            control={
+              <Checkbox
+                checked={filter[difficulty]}
+                onChange={handleFilterChange}
+                name={difficulty}
+              />
+            }
+            label={difficulty}
+          />
+        ))}
         <IconButton
           onClick={() => getRandomQuestion(Object.values(topics).flat())}
         >
-          <Shuffle />
+          <Shuffle/>
         </IconButton>
       </Box>
 
       {/*add some padding*/}
-      <Box py={2} />
+      <Box py={2}/>
 
       {Object.entries(topics).map(([topic, questions]) => (
         <div key={topic}>
@@ -92,7 +68,7 @@ const Question = () => {
               {topic}
             </Typography>
             <IconButton onClick={() => getRandomQuestion(questions)}>
-              <Shuffle />
+              <Shuffle/>
             </IconButton>
           </Box>
           <List>
