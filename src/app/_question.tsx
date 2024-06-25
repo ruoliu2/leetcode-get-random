@@ -53,6 +53,9 @@ const Question = () => {
       setQuestionSelection(JSON.parse(savedSelection));
     }
   }, []);
+  useEffect(() => {
+    localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
+  }, [questionSelection]);
 
   // custom functions
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,11 +76,9 @@ const Question = () => {
   };
   const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuestionSelection(prevState => ({...prevState, [event.target.name]: event.target.checked,}))
-    localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
   }
   const handleOnClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, name: string, link: string) => {
     setQuestionSelection(prevState => ({...prevState, [name]: false,}))
-    localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
     window.open(link, '_blank');
     event.preventDefault();
   }
