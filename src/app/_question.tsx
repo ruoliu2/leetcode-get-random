@@ -1,5 +1,5 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Box,
   Checkbox,
@@ -37,12 +37,7 @@ const Question = () => {
   // yseStates and useEffects
   const [filter, setFilter] = useState<Filter>(initFilter);
   const [questionSelection, setQuestionSelection] = useState<QuestionSelection>(() => {
-    // TODO: implement local storage
-    // if (isBrowser) {
-    //   const savedSelection = localStorage.getItem(QUESTION_SELECTION);
-    //   if (savedSelection) return JSON.parse(savedSelection);
-    // }
-    // If no selection is found or not browser, initialize all questions as selected
+    // initialize all questions as selected
     const defaultSelection: { [key: string]: boolean } = {};
     Object.entries(topics).forEach(([topic, questions]) => {
         questions.forEach(([name, link, difficulty]) => {
@@ -52,9 +47,12 @@ const Question = () => {
     );
     return defaultSelection;
   });
-  // useEffect(() => {
-  //   localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
-  // }, [questionSelection]);
+  useEffect(() => {
+    const savedSelection = localStorage.getItem(QUESTION_SELECTION);
+    if (savedSelection) {
+      setQuestionSelection(JSON.parse(savedSelection));
+    }
+  }, []);
 
   // custom functions
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +72,12 @@ const Question = () => {
     window.open(link, '_blank');
   };
   const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.name, event.target.checked)
     setQuestionSelection(prevState => ({...prevState, [event.target.name]: event.target.checked,}))
+    localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
   }
   const handleOnClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, name: string, link: string) => {
     setQuestionSelection(prevState => ({...prevState, [name]: false,}))
+    localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
     window.open(link, '_blank');
     event.preventDefault();
   }
