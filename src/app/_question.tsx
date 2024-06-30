@@ -32,9 +32,8 @@ const initFilter = {
   Medium: true,
   Hard: true,
 }
-const isBrowser = typeof window !== 'undefined';
 const Question = () => {
-  // yseStates and useEffects
+  // useStates and useEffects
   const [filter, setFilter] = useState<Filter>(initFilter);
   const [questionSelection, setQuestionSelection] = useState<QuestionSelection>(() => {
     // initialize all questions as selected
@@ -47,20 +46,40 @@ const Question = () => {
     );
     return defaultSelection;
   });
+
+  // State for counters
+  const [completedCount, setCompletedCount] = useState(0);
+  const [todoCount, setTodoCount] = useState(0);
+
   useEffect(() => {
     const savedSelection = localStorage.getItem(QUESTION_SELECTION);
     if (savedSelection) {
       setQuestionSelection(JSON.parse(savedSelection));
     }
   }, []);
+
   useEffect(() => {
     localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
+
+    // Update counters
+    let completed = 0;
+    let todo = 0;
+    Object.values(questionSelection).forEach((selected) => {
+      if (selected) {
+        todo += 1;
+      } else {
+        completed += 1;
+      }
+    });
+    setCompletedCount(completed);
+    setTodoCount(todo);
   }, [questionSelection]);
 
   // custom functions
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter({...filter, [event.target.name]: event.target.checked});
   };
+
   const getRandomQuestion = (questions: string[][]) => {
     const filteredQuestions = questions.filter(
       ([name, link, difficulty]) => filter[difficulty] && questionSelection[name]
@@ -74,14 +93,17 @@ const Question = () => {
     setQuestionSelection({...questionSelection, [name]: false,});
     window.open(link, '_blank');
   };
+
   const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuestionSelection(prevState => ({...prevState, [event.target.name]: event.target.checked,}))
   }
+
   const handleOnClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, name: string, link: string) => {
     setQuestionSelection(prevState => ({...prevState, [name]: false,}))
     window.open(link, '_blank');
     event.preventDefault();
   }
+
   return (
     <Box>
       <Box>
@@ -105,7 +127,13 @@ const Question = () => {
         </IconButton>
       </Box>
 
-      {/*add some padding*/}
+      <Box mt={2}>
+        <Typography variant="h6">Completed: {completedCount}
+          <span style={{marginLeft: '1em'}}>Todo: {todoCount}
+          </span>
+        </Typography>
+      </Box>
+
       <Box py={2}/>
 
       {Object.entries(topics).map(([topic, questions]) => (
@@ -148,6 +176,7 @@ const Question = () => {
                 )
             )}
           </List>
+          <Box py={2}/>
         </div>
       ))}
     </Box>
