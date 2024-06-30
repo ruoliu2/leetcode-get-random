@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   Box,
   Checkbox,
@@ -31,25 +31,19 @@ const initFilter = {
   Easy: true,
   Medium: true,
   Hard: true,
-}
+};
+
 const Question = () => {
-  // useStates and useEffects
   const [filter, setFilter] = useState<Filter>(initFilter);
   const [questionSelection, setQuestionSelection] = useState<QuestionSelection>(() => {
-    // initialize all questions as selected
     const defaultSelection: { [key: string]: boolean } = {};
     Object.entries(topics).forEach(([topic, questions]) => {
-        questions.forEach(([name, link, difficulty]) => {
-          defaultSelection[name] = true;
-        });
-      }
-    );
+      questions.forEach(([name, link, difficulty]) => {
+        defaultSelection[name] = true;
+      });
+    });
     return defaultSelection;
   });
-
-  // State for counters
-  const [completedCount, setCompletedCount] = useState(0);
-  const [todoCount, setTodoCount] = useState(0);
 
   useEffect(() => {
     const savedSelection = localStorage.getItem(QUESTION_SELECTION);
@@ -60,22 +54,8 @@ const Question = () => {
 
   useEffect(() => {
     localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
-
-    // Update counters
-    let completed = 0;
-    let todo = 0;
-    Object.values(questionSelection).forEach((selected) => {
-      if (selected) {
-        todo += 1;
-      } else {
-        completed += 1;
-      }
-    });
-    setCompletedCount(completed);
-    setTodoCount(todo);
   }, [questionSelection]);
 
-  // custom functions
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter({...filter, [event.target.name]: event.target.checked});
   };
@@ -89,20 +69,38 @@ const Question = () => {
     }
     const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
     const [name, link, difficulty] = filteredQuestions[randomIndex];
-    // mark question as not selected
-    setQuestionSelection({...questionSelection, [name]: false,});
+    setQuestionSelection({...questionSelection, [name]: false});
     window.open(link, '_blank');
   };
 
   const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuestionSelection(prevState => ({...prevState, [event.target.name]: event.target.checked,}))
-  }
+    setQuestionSelection(prevState => ({...prevState, [event.target.name]: event.target.checked}));
+  };
 
   const handleOnClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, name: string, link: string) => {
-    setQuestionSelection(prevState => ({...prevState, [name]: false,}))
+    setQuestionSelection(prevState => ({...prevState, [name]: false}));
     window.open(link, '_blank');
     event.preventDefault();
-  }
+  };
+
+  const filteredQuestions = useMemo(() => {
+    return Object.entries(topics).flatMap(([topic, questions]) => {
+      return questions.filter(([name, link, difficulty]) => filter[difficulty]);
+    });
+  }, [filter]);
+
+  const [completedCount, todoCount] = useMemo(() => {
+    let completed = 0;
+    let todo = 0;
+    filteredQuestions.forEach(([name, link, difficulty]) => {
+      if (questionSelection[name]) {
+        todo += 1;
+      } else {
+        completed += 1;
+      }
+    });
+    return [completed, todo];
+  }, [filteredQuestions, questionSelection]);
 
   return (
     <Box>
@@ -120,17 +118,15 @@ const Question = () => {
             label={difficulty}
           />
         ))}
-        <IconButton
-          onClick={() => getRandomQuestion(Object.values(topics).flat())}
-        >
+        <IconButton onClick={() => getRandomQuestion(Object.values(topics).flat())}>
           <Shuffle/>
         </IconButton>
       </Box>
 
       <Box mt={2}>
-        <Typography variant="h6">Completed: {completedCount}
-          <span style={{marginLeft: '1em'}}>Todo: {todoCount}
-          </span>
+        <Typography variant="h6">
+          Completed: {completedCount}
+          <span style={{marginLeft: '1em'}}>Todo: {todoCount}</span>
         </Typography>
       </Box>
 
@@ -150,10 +146,7 @@ const Question = () => {
             {questions.map(
               ([name, link, difficulty], index) =>
                 filter[difficulty] && (
-                  <ListItem
-                    key={index}
-                    divider
-                  >
+                  <ListItem key={index} divider>
                     <Checkbox
                       key={name}
                       checked={questionSelection[name]}
