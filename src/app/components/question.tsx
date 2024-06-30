@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   Box,
   Checkbox,
@@ -9,51 +9,38 @@ import {
   List,
   ListItem,
   ListItemText,
-  Typography
+  Typography,
 } from '@mui/material';
-import topics from '../../public/data/top150.json';
+import topics from '../../../public/data/top150.json';
 import {Shuffle} from '@mui/icons-material';
+import useQuestionStore from "../stores/useQuestionStore";
 
-const QUESTION_SELECTION = 'questionSelection';
 const difficultyColors: { [key: string]: string } = {
   Easy: 'green',
   Medium: 'orange',
   Hard: 'red',
 };
-type Filter = {
-  [key: string]: boolean;
-};
-type QuestionSelection = {
-  [key: string]: boolean;
-};
+
 const difficulties = ['Easy', 'Medium', 'Hard'];
-const initFilter = {
-  Easy: true,
-  Medium: true,
-  Hard: true,
-};
 
 const Question = () => {
-  const [filter, setFilter] = useState<Filter>(initFilter);
-  const [questionSelection, setQuestionSelection] = useState<QuestionSelection>(() => {
-    const defaultSelection: { [key: string]: boolean } = {};
-    Object.entries(topics).forEach(([topic, questions]) => {
-      questions.forEach(([name, link, difficulty]) => {
-        defaultSelection[name] = true;
-      });
-    });
-    return defaultSelection;
-  });
+  const {
+    filter,
+    questionSelection,
+    setFilter,
+    toggleQuestionSelection,
+    setQuestionSelection,
+  } = useQuestionStore();
 
   useEffect(() => {
-    const savedSelection = localStorage.getItem(QUESTION_SELECTION);
+    const savedSelection = localStorage.getItem('questionSelection');
     if (savedSelection) {
       setQuestionSelection(JSON.parse(savedSelection));
     }
-  }, []);
+  }, [setQuestionSelection]);
 
   useEffect(() => {
-    localStorage.setItem(QUESTION_SELECTION, JSON.stringify(questionSelection));
+    localStorage.setItem('questionSelection', JSON.stringify(questionSelection));
   }, [questionSelection]);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,16 +56,12 @@ const Question = () => {
     }
     const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
     const [name, link, difficulty] = filteredQuestions[randomIndex];
-    setQuestionSelection({...questionSelection, [name]: false});
+    toggleQuestionSelection(name);
     window.open(link, '_blank');
   };
 
-  const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuestionSelection(prevState => ({...prevState, [event.target.name]: event.target.checked}));
-  };
-
   const handleOnClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, name: string, link: string) => {
-    setQuestionSelection(prevState => ({...prevState, [name]: false}));
+    toggleQuestionSelection(name);
     window.open(link, '_blank');
     event.preventDefault();
   };
@@ -151,10 +134,14 @@ const Question = () => {
                       key={name}
                       checked={questionSelection[name]}
                       name={name}
-                      onChange={handleSelectionChange}
+                      onChange={() => toggleQuestionSelection(name)}
                     />
-                    <Link href={link} underline="none" target={'_blank'}
-                          onClick={(event) => handleOnClick(event, name, link)}>
+                    <Link
+                      href={link}
+                      underline="none"
+                      target={'_blank'}
+                      onClick={(event) => handleOnClick(event, name, link)}
+                    >
                       <ListItemText
                         primary={name}
                         secondary={difficulty}
