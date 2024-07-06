@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import topics from '../../../public/data/top150.json';
 import {Shuffle} from '@mui/icons-material';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import CancelIcon from '@mui/icons-material/Cancel';
 import useQuestionStore from "../stores/useQuestionStore";
 
 const difficultyColors: { [key: string]: string } = {
@@ -30,6 +32,8 @@ const Question = () => {
     setFilter,
     toggleQuestionSelection,
     setQuestionSelection,
+    resetQuestionSelection,
+    clearSelection,
   } = useQuestionStore();
 
   useEffect(() => {
@@ -87,23 +91,34 @@ const Question = () => {
 
   return (
     <Box>
-      <Box>
-        {difficulties.map((difficulty) => (
-          <FormControlLabel
-            key={difficulty}
-            control={
-              <Checkbox
-                checked={filter[difficulty]}
-                onChange={handleFilterChange}
-                name={difficulty}
-              />
-            }
-            label={difficulty}
-          />
-        ))}
-        <IconButton onClick={() => getRandomQuestion(Object.values(topics).flat())}>
-          <Shuffle/>
-        </IconButton>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box display={'flex'}>
+          {difficulties.map((difficulty) => (
+            <FormControlLabel
+              key={difficulty}
+              control={
+                <Checkbox
+                  checked={filter[difficulty]}
+                  onChange={handleFilterChange}
+                  name={difficulty}
+                />
+              }
+              label={difficulty}
+            />
+          ))}
+
+          <IconButton onClick={() => getRandomQuestion(Object.values(topics).flat())}>
+            <Shuffle/>
+          </IconButton>
+        </Box>
+        <Box display={'flex'}>
+          <IconButton onClick={resetQuestionSelection}>
+            <RestartAltIcon/>
+          </IconButton>
+          <IconButton onClick={clearSelection}>
+            <CancelIcon/>
+          </IconButton>
+        </Box>
       </Box>
 
       <Box mt={2}>
