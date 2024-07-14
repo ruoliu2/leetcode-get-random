@@ -1,4 +1,4 @@
-A page to get random leetcode 150 questions for practice
+A page to get random leetcode questions from leetcode lists for practice
 
 technologies used: nextjs, zustand, and mui
 
