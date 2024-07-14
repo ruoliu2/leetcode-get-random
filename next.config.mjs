@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/leetcode-top-150",
+  basePath: "/leetcode-get-random",
   output: "export",  // <=== enables static exports
   reactStrictMode: true,
 };

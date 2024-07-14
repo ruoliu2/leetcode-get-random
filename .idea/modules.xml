@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/leetcode-top-150-random.iml" filepath="$PROJECT_DIR$/.idea/leetcode-top-150-random.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/leetcode-get-random.iml" filepath="$PROJECT_DIR$/.idea/leetcode-get-random.iml" />
     </modules>
   </component>
 </project>
