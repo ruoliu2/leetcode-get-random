@@ -133,7 +133,7 @@ const Question = () => {
       {Object.entries(topics).map(([topic, questions]) => (
         <div key={topic}>
           <Box display="flex" alignItems="center" justifyContent="flex-start">
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
               {topic}
             </Typography>
             <IconButton onClick={() => getRandomQuestion(questions)}>
