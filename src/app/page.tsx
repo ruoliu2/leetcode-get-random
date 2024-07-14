@@ -1,10 +1,12 @@
 'use client';
-import {Container} from '@mui/material';
-import Question from '@/app/components/question';
+import {Box, Container} from '@mui/material';
+import Top150 from '@/app/components/top150';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import React from "react";
 import CssBaseline from '@mui/material/CssBaseline';
+import Topbar from "@/app/components/header";
+import Header from '@/app/components/header';
 
 
 export default function Home() {
@@ -23,9 +25,10 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
-      <Container>
-        <Question/>
-      </Container>
+      <>
+        <Header />
+        <Top150/>
+      </>
     </ThemeProvider>
   );
 }

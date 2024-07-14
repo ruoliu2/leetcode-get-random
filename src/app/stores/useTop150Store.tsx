@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import topics from '../../../public/data/top150.json';
-
+import {usePathname} from "next/navigation";
 type Filter = {
   [key: string]: boolean;
 };
@@ -26,7 +26,7 @@ const initFilter: Filter = {
   Hard: true,
 };
 
-const useQuestionStore = create<QuestionState>((set) => ({
+const useTop150Store = create<QuestionState>((set) => ({
   filter: initFilter,
   questionSelection: (() => {
     const defaultSelection: { [key: string]: boolean } = {};
@@ -60,4 +60,4 @@ const useQuestionStore = create<QuestionState>((set) => ({
   }),
 }));
 
-export default useQuestionStore;
+export default useTop150Store;

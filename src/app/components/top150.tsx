@@ -2,8 +2,8 @@
 import React, {useEffect, useMemo} from 'react';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
+  Checkbox, Container,
+  FormControlLabel, Grid,
   IconButton,
   Link,
   List,
@@ -15,7 +15,7 @@ import topics from '../../../public/data/top150.json';
 import {Shuffle} from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useQuestionStore from "../stores/useQuestionStore";
+import useTop150Store from "../stores/useTop150Store";
 
 const difficultyColors: { [key: string]: string } = {
   Easy: 'green',
@@ -25,7 +25,7 @@ const difficultyColors: { [key: string]: string } = {
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
 
-const Question = () => {
+const Top150 = () => {
   const {
     filter,
     questionSelection,
@@ -34,7 +34,7 @@ const Question = () => {
     setQuestionSelection,
     resetQuestionSelection,
     clearSelection,
-  } = useQuestionStore();
+  } = useTop150Store();
 
   useEffect(() => {
     const savedSelection = localStorage.getItem('questionSelection');
@@ -90,7 +90,7 @@ const Question = () => {
   }, [filteredQuestions, questionSelection]);
 
   return (
-    <Box>
+    <Container><Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display={'flex'}>
           {difficulties.map((difficulty) => (
@@ -174,8 +174,8 @@ const Question = () => {
           <Box py={2}/>
         </div>
       ))}
-    </Box>
+      </Container></Container>
   );
 };
 
-export default Question;
+export default Top150;
