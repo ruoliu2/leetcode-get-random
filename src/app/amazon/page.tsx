@@ -18,10 +18,11 @@ const ProblemList = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              <TableCell>#</TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Difficulty</TableCell>
-              <TableCell>Completion</TableCell>
+              <TableCell>Frequency</TableCell>
+              <TableCell>Acceptance</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
