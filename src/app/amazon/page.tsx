@@ -1,46 +1,62 @@
-import React from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, LinearProgress, Chip } from '@mui/material';
+'use client';
+import React, {useEffect, useMemo} from 'react';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, LinearProgress, Chip, ChipProps } from '@mui/material';
+import amazonStore from "@/app/stores/amazonStore";
+import {amazonStorageKey, difficultyChipColors, difficulties,} from "@/app/components/constants";
+import amazonQuestions from "../../../public/data/amazon.json";
 
-const problems = [
-  { id: 2340, title: 'Minimum Adjacent Swaps to Make a Valid Array', difficulty: 'Medium', completion: 72.6 },
-  { id: 2781, title: 'Length of the Longest Valid Substring', difficulty: 'Hard', completion: 37.6 },
-  { id: 1152, title: 'Analyze User Website Visit Pattern', difficulty: 'Medium', completion: 42.7 },
-  { id: 2055, title: 'Plates Between Candles', difficulty: 'Medium', completion: 44.9 },
-  { id: 2268, title: 'Minimum Number of Keypresses', difficulty: 'Medium', completion: 71.3 },
-  { id: 472, title: 'Concatenated Words', difficulty: 'Hard', completion: 49.4 },
-  { id: 146, title: 'LRU Cache', difficulty: 'Medium', completion: 42.8 },
-];
+const AmazonProblemList = () => {
+  const {
+    filter,
+    questionSelection,
+    setFilter,
+    toggleQuestionSelection,
+    setQuestionSelection,
+    resetQuestionSelection,
+    clearSelection,
+  } = amazonStore();
 
-const ProblemList = () => {
+  useEffect(() => {
+    const savedSelection = localStorage.getItem(amazonStorageKey);
+    if (savedSelection) {
+      setQuestionSelection(JSON.parse(savedSelection));
+    }
+  }, [setQuestionSelection]);
+
+  useEffect(() => {
+    localStorage.setItem(amazonStorageKey, JSON.stringify(questionSelection));
+  }, [questionSelection]);
+
   return (
     <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto', mt: 4 }}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              <TableCell>#</TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Difficulty</TableCell>
-              <TableCell>Completion</TableCell>
+              <TableCell>Frequency</TableCell>
+              <TableCell>Acceptance</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {problems.map((problem) => (
-              <TableRow key={problem.id}>
-                <TableCell>{problem.id}</TableCell>
+            {amazonQuestions.map((problem) => (
+              <TableRow key={problem.number}>
+                <TableCell>{problem.number}</TableCell>
                 <TableCell>
                   <Typography color="primary">{problem.title}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Chip label={problem.difficulty} color={problem.difficulty === 'Hard' ? 'error' : 'warning'} />
+                  <Chip label={problem.difficulty} color={difficultyChipColors[problem.difficulty] as ChipProps['color']} />
                 </TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Box sx={{ width: '100%', mr: 1 }}>
-                      <LinearProgress variant="determinate" value={problem.completion} />
+                      <LinearProgress variant="determinate" value={Number(problem.frequency) / 3.076 * 100} />
                     </Box>
                     <Box sx={{ minWidth: 35 }}>
-                      <Typography variant="body2" color="textSecondary">{`${Math.round(problem.completion)}%`}</Typography>
+                      <Typography variant="body2" color="textSecondary">{`${Math.round(Number(problem.frequency) / 3.076 * 100)}%`}</Typography>
                     </Box>
                   </Box>
                 </TableCell>
@@ -53,4 +69,4 @@ const ProblemList = () => {
   );
 };
 
-export default ProblemList;
+export default AmazonProblemList;
