@@ -24,6 +24,7 @@ const difficultyColors: { [key: string]: string } = {
 };
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
+const top150StorageKey = 'top150Selection';
 
 const Top150 = () => {
   const {
@@ -37,14 +38,14 @@ const Top150 = () => {
   } = top150Store();
 
   useEffect(() => {
-    const savedSelection = localStorage.getItem('questionSelection');
+    const savedSelection = localStorage.getItem(top150StorageKey);
     if (savedSelection) {
       setQuestionSelection(JSON.parse(savedSelection));
     }
   }, [setQuestionSelection]);
 
   useEffect(() => {
-    localStorage.setItem('questionSelection', JSON.stringify(questionSelection));
+    localStorage.setItem(top150StorageKey, JSON.stringify(questionSelection));
   }, [questionSelection]);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {

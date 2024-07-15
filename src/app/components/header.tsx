@@ -2,8 +2,9 @@
 'use client';
 import React, {useState} from 'react';
 import {useTheme} from "@mui/material/styles";
-import {Box, Container, AppBar, Toolbar} from "@mui/material";
+import {Box, Container, AppBar, Toolbar, Typography, Button} from "@mui/material";
 import Link from "next/link";
+import HeaderLink from "@/app/components/header/link";
 
 const Header: React.FC = () => {
   const appBarBg = useTheme().palette.mode === "light" ? "white" : "black";
@@ -27,9 +28,10 @@ const Header: React.FC = () => {
             width: "30%",
           }}
         >
-          <Link href="/"> Top 150 </Link>
+          <HeaderLink href={"/"} text={"Top 150"} />
 
-          <Link href="/amazon"> amazon </Link>
+          <HeaderLink href={"/amazon"} text={"Amazon"} />
+
         </Toolbar>
         <Toolbar
           sx={{

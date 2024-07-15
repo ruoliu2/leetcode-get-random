@@ -3,6 +3,7 @@ import { Container, CssBaseline, useMediaQuery, ThemeProvider } from '@mui/mater
 import React from "react";
 import {createTheme} from "@mui/material/styles";
 import Header from "@/app/components/header";
+import '@/app/globals.css';
 
 export default function RootLayout({
   children,
