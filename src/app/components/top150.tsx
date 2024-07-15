@@ -123,8 +123,8 @@ const Top150 = () => {
 
       <Box mt={2}>
         <Typography variant="h6">
-          Completed: {completedCount}
-          <span style={{marginLeft: '1em'}}>Todo: {todoCount}</span>
+          completed: {completedCount}
+          <span style={{marginLeft: '1em'}}>todo: {todoCount}</span>
         </Typography>
       </Box>
 

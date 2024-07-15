@@ -6,7 +6,10 @@ import {useTheme} from "@mui/material/styles";
 import {Box, Container, AppBar, Toolbar} from "@mui/material";
 
 const Header: React.FC = () => {
-  const appbarbg = useTheme().palette.mode === "light" ? "white" : "black";
+  const appBarBg = useTheme().palette.mode === "light" ? "white" : "black";
+  const basePath = process.env.basePath ?? '';
+  const getLink = (path: string) => `${basePath}${path}`;
+  console.log(getLink("/"));
   return (
     <Container><Container>
       <AppBar
@@ -14,7 +17,7 @@ const Header: React.FC = () => {
         sx={{
           height: "7.5vh",
           justifyContent: "flex-start",
-          backgroundColor: appbarbg,
+          backgroundColor: appBarBg,
           boxShadow: "none",
         }}
         elevation={1}
@@ -27,9 +30,9 @@ const Header: React.FC = () => {
             width: "30%",
           }}
         >
-          <HeaderLink href="/" text="Top 150" />
+          <HeaderLink href={getLink("/")} text="top 150" />
 
-          <HeaderLink href="/amazon" text="amazon" />
+          <HeaderLink href={getLink("/amazon")} text="amazon" />
         </Toolbar>
         <Toolbar
           sx={{
