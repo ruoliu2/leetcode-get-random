@@ -1,12 +1,21 @@
+import Chip, { ChipProps } from '@mui/material/Chip';
+
 const difficultyColors: { [key: string]: string } = {
   Easy: 'green',
   Medium: 'orange',
   Hard: 'red',
 };
 
+
+const difficultyChipColors: { [key: string]: ChipProps['color'] } = {
+  Easy: 'success',
+  Medium: 'warning',
+  Hard: 'error',
+};
+
 const difficulties = ['Easy', 'Medium', 'Hard'];
 const top150StorageKey = 'top150Selection';
-
+const amazonStorageKey = 'amazonSelection';
 
 const initFilter: Filter = {
   Easy: true,
@@ -47,6 +56,8 @@ export {
   difficulties,
   top150StorageKey,
   initFilter,
+  amazonStorageKey,
+  difficultyChipColors,
 }
 
 export type {

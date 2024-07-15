@@ -1,5 +1,5 @@
 import create from 'zustand';
-import questions from '../../../public/data/amazon.json';
+import amazonQuestions from '../../../public/data/amazon.json';
 
 import { Filter, QuestionSelection, initFilter, AmazonState } from '../components/constants';
 
@@ -7,7 +7,7 @@ const useAmazonStore = create<AmazonState>((set) => ({
   filter: initFilter,
   questionSelection: (() => {
     const defaultSelection: { [key: string]: boolean } = {};
-    questions.forEach((question) => {
+    amazonQuestions.forEach((question) => {
       defaultSelection[question.number] = true;
     });
     return defaultSelection;

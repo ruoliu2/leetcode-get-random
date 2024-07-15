@@ -16,7 +16,6 @@ import {Shuffle} from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
 import top150Store from "../stores/top150Store";
-
 import {difficulties, difficultyColors, top150StorageKey} from './constants';
 
 const Top150 = () => {
