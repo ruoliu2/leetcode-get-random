@@ -2,8 +2,8 @@
 import React, {useEffect, useMemo} from 'react';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
+  Checkbox, Container,
+  FormControlLabel, Grid,
   IconButton,
   Link,
   List,
@@ -15,7 +15,7 @@ import topics from '../../../public/data/top150.json';
 import {Shuffle} from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useQuestionStore from "../stores/useQuestionStore";
+import top150Store from "../stores/top150Store";
 
 const difficultyColors: { [key: string]: string } = {
   Easy: 'green',
@@ -24,8 +24,9 @@ const difficultyColors: { [key: string]: string } = {
 };
 
 const difficulties = ['Easy', 'Medium', 'Hard'];
+const top150StorageKey = 'top150Selection';
 
-const Question = () => {
+const Top150 = () => {
   const {
     filter,
     questionSelection,
@@ -34,17 +35,17 @@ const Question = () => {
     setQuestionSelection,
     resetQuestionSelection,
     clearSelection,
-  } = useQuestionStore();
+  } = top150Store();
 
   useEffect(() => {
-    const savedSelection = localStorage.getItem('questionSelection');
+    const savedSelection = localStorage.getItem(top150StorageKey);
     if (savedSelection) {
       setQuestionSelection(JSON.parse(savedSelection));
     }
   }, [setQuestionSelection]);
 
   useEffect(() => {
-    localStorage.setItem('questionSelection', JSON.stringify(questionSelection));
+    localStorage.setItem(top150StorageKey, JSON.stringify(questionSelection));
   }, [questionSelection]);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +91,7 @@ const Question = () => {
   }, [filteredQuestions, questionSelection]);
 
   return (
-    <Box>
+    <Container><Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display={'flex'}>
           {difficulties.map((difficulty) => (
@@ -123,8 +124,8 @@ const Question = () => {
 
       <Box mt={2}>
         <Typography variant="h6">
-          Completed: {completedCount}
-          <span style={{marginLeft: '1em'}}>Todo: {todoCount}</span>
+          completed: {completedCount}
+          <span style={{marginLeft: '1em'}}>todo: {todoCount}</span>
         </Typography>
       </Box>
 
@@ -174,8 +175,8 @@ const Question = () => {
           <Box py={2}/>
         </div>
       ))}
-    </Box>
+      </Container></Container>
   );
 };
 
-export default Question;
+export default Top150;
