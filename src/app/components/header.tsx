@@ -1,15 +1,12 @@
 // Header.tsx
 'use client';
 import React, {useState} from 'react';
-import HeaderLink from '@/app/components/header/link';
 import {useTheme} from "@mui/material/styles";
 import {Box, Container, AppBar, Toolbar} from "@mui/material";
+import Link from "next/link";
 
 const Header: React.FC = () => {
   const appBarBg = useTheme().palette.mode === "light" ? "white" : "black";
-  const basePath = process.env.basePath ?? '';
-  const getLink = (path: string) => `${basePath}${path}`;
-  console.log(getLink("/"));
   return (
     <Container><Container>
       <AppBar
@@ -30,9 +27,9 @@ const Header: React.FC = () => {
             width: "30%",
           }}
         >
-          <HeaderLink href={getLink("/")} text="top 150" />
+          <Link href="/"> Top 150 </Link>
 
-          <HeaderLink href={getLink("/amazon")} text="amazon" />
+          <Link href="/amazon"> amazon </Link>
         </Toolbar>
         <Toolbar
           sx={{

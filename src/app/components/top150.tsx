@@ -15,7 +15,7 @@ import topics from '../../../public/data/top150.json';
 import {Shuffle} from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useTop150Store from "../stores/useTop150Store";
+import top150Store from "../stores/top150Store";
 
 const difficultyColors: { [key: string]: string } = {
   Easy: 'green',
@@ -34,7 +34,7 @@ const Top150 = () => {
     setQuestionSelection,
     resetQuestionSelection,
     clearSelection,
-  } = useTop150Store();
+  } = top150Store();
 
   useEffect(() => {
     const savedSelection = localStorage.getItem('questionSelection');
