@@ -16,6 +16,7 @@ const difficultyChipColors: { [key: string]: ChipProps['color'] } = {
 const difficulties = ['Easy', 'Medium', 'Hard'];
 const top150StorageKey = 'top150Selection';
 const amazonStorageKey = 'amazonSelection';
+const leetcodeSite = 'https://leetcode.com';
 
 const initFilter: Filter = {
   Easy: true,
@@ -58,6 +59,7 @@ export {
   initFilter,
   amazonStorageKey,
   difficultyChipColors,
+  leetcodeSite,
 }
 
 export type {

@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import amazonQuestions from '../../../public/data/amazon.json';
 
 import { Filter, QuestionSelection, initFilter, AmazonState } from '../components/constants';
