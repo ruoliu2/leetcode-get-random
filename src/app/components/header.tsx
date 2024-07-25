@@ -7,7 +7,7 @@ import Link from "next/link";
 import HeaderLink from "@/app/components/header/link";
 
 const Header: React.FC = () => {
-  const appBarBg = useTheme().palette.mode === "light" ? "white" : "black";
+  const appBarBg = useTheme().palette.mode === "light" ? "white" : "rgba(0,0,0,0.73)";
   return (
     <Container><Container>
       <AppBar
@@ -15,6 +15,7 @@ const Header: React.FC = () => {
         sx={{
           height: "7.5vh",
           justifyContent: "flex-start",
+          color: appBarBg,
           backgroundColor: appBarBg,
           boxShadow: "none",
         }}
